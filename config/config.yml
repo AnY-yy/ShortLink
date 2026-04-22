@@ -1,0 +1,11 @@
+Database:
+  Host: 127.0.0.1
+  Port: 3306
+  User: root
+  Password: aaa2021s
+  DB: shorturl
+
+Redis:
+  HostPort: 127.0.0.1:6379
+  Password:
+  DB: 0

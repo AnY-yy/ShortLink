@@ -1,7 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"shortURL/internal/bootstrap"
+	"shortURL/internal/router"
+)
+
+var err error
 
 func main() {
-	fmt.Println("Hello, World!")
+	// 初始化组件
+	bootstrap.Setup()
+
+	// 启动服务
+	router.InitRouter().Run(":8080")
 }

@@ -1,4 +1,4 @@
-package utils
+package logger
 
 import (
 	"os"
@@ -8,8 +8,6 @@ import (
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
-
-var Logger *zap.Logger
 
 // 日志配置 编码器 决定日志的格式
 func getEncoder() zapcore.Encoder {
@@ -42,7 +40,7 @@ func warpAsyncCore(ws zapcore.WriteSyncer) *zapcore.BufferedWriteSyncer {
 	asyncWS := &zapcore.BufferedWriteSyncer{
 		WS:            ws,
 		Size:          256 * 1024,           // 缓冲区大小 256KB
-		FlushInterval: time.Second * 10,     // 每10秒刷新一次缓冲区
+		FlushInterval: time.Second * 5,      // 每10秒刷新一次缓冲区
 		Clock:         zapcore.DefaultClock, // 使用默认时钟
 	}
 
@@ -79,9 +77,9 @@ func generateLogger() *zap.Logger {
 	// 这个日志实例包含所有组件设置的所有功能
 }
 
-// 初始化日志实例
-func InitLoger() {
+// NewLoger 初始化日志实例
+func NewLoger() *zap.Logger {
 	// 创建Logger
-	Logger = generateLogger()
-	defer Logger.Sync() // 日志退出前刷新缓冲区
+	logger := generateLogger()
+	return logger
 }
