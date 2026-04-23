@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"shortURL/internal/bootstrap"
 	"shortURL/internal/model"
 
 	"github.com/gin-gonic/gin"
 	validator2 "github.com/go-playground/validator/v10"
+	"go.uber.org/zap"
 )
 
 type URLService interface {
@@ -55,15 +57,13 @@ func (uh *URLHandler) CreateURL(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Println(req)
 
 	// 数据校验
 	if err := uh.validator.Struct(req); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": fmt.Errorf("输入数据格式错误: %v", err),
-		})
+		bootstrap.Application.Logger.Error("输入数据格式错误", zap.Error(err))
 		return
 	}
+	fmt.Println(req)
 
 	// 业务逻辑层调用 传入数据格式正确的req
 	rep, err := uh.urlService.CreateURL(c, &req)
@@ -73,6 +73,7 @@ func (uh *URLHandler) CreateURL(c *gin.Context) {
 		})
 		return
 	}
+	c.JSON(http.StatusOK, rep)
 	// 渲染首页界面 将创建的短链返回给客户端
 	if rep != nil {
 		uh.IndexHandler(rep)(c)
