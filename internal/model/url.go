@@ -6,12 +6,17 @@ import (
 
 // URLParams 短链接参数 用于数据存储
 type URLParams struct {
-	Id           int
-	LongURL      string
-	ShortURL     string
-	SelfShortUrl string
-	ExpireAt     time.Time
-	CreatedAt    time.Time
+	ID           int64     `gorm:"primaryKey;column:id"`
+	LongURL      string    `gorm:"column:longurl"`
+	ShortURL     string    `gorm:"column:shorturl"`
+	SelfShortUrl string    `gorm:"column:selfshorturl"`
+	IsCustom     bool      `gorm:"column:iscustom"`
+	ExpireAt     time.Time `gorm:"column:expiretime"`
+	CreatedAt    time.Time `gorm:"column:createdtime"`
+}
+
+func (URLParams) TableName() string {
+	return "urls"
 }
 
 // CreateURLRequest
