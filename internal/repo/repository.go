@@ -1,7 +1,7 @@
 package repo
 
 import (
-	"fmt"
+	"errors"
 	"shortURL/internal/bootstrap"
 	"shortURL/internal/model"
 
@@ -21,7 +21,10 @@ func NewDB() *Repository {
 
 // CreateURL 创建短链接数据
 func (r *Repository) CreateURL(urlParams *model.URLParams) error {
-
+	err := r.DB.Create(&urlParams).Error
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -29,10 +32,13 @@ func (r *Repository) CreateURL(urlParams *model.URLParams) error {
 func (r *Repository) IsExistLongURL(longURL string) (bool, error) {
 	var urlParams model.URLParams
 	if err := r.DB.Where("longurl = ?", longURL).First(&urlParams).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) { // 判断error是否为记录不存在
+			return false, nil
+		}
 		return false, err
 	}
-	if urlParams.Id == 0 {
-		return false, fmt.Errorf("长链接不存在")
+	if urlParams.ID == 0 {
+		return false, nil
 	}
 	return true, nil
 }
@@ -41,10 +47,13 @@ func (r *Repository) IsExistLongURL(longURL string) (bool, error) {
 func (r *Repository) IsExistShortURL(shortURL string) (bool, error) {
 	var urlParams model.URLParams
 	if err := r.DB.Where("shorturl = ?", shortURL).First(&urlParams).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) { // 判断error是否为记录不存在
+			return false, nil
+		}
 		return false, err
 	}
-	if urlParams.Id == 0 {
-		return false, fmt.Errorf("短链接不存在")
+	if urlParams.ID == 0 {
+		return false, nil
 	}
 	return true, nil
 }
