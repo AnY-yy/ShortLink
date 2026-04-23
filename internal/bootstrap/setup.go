@@ -6,6 +6,7 @@ import (
 	"shortURL/database/rdb"
 	"shortURL/internal/model"
 	"shortURL/pkg/logger"
+	"shortURL/pkg/snowflake"
 )
 
 var Application *model.App
@@ -20,4 +21,5 @@ func Setup() {
 	Application.DB = db.NewDB()
 	Application.RDB = rdb.NewRDB()
 	Application.Logger = logger.NewLoger()
+	Application.SnowFlake, _ = snowflake.NewSnowFlake(1)
 }
