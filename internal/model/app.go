@@ -1,6 +1,7 @@
 package model
 
 import (
+	"shortURL/pkg/bloom"
 	"shortURL/pkg/snowflake"
 
 	"github.com/redis/go-redis/v9"
@@ -9,8 +10,9 @@ import (
 )
 
 type App struct {
-	Logger    *zap.Logger
-	DB        *gorm.DB
-	RDB       *redis.Client
-	SnowFlake *snowflake.SnowFlake
+	Logger      *zap.Logger
+	DB          *gorm.DB
+	RDB         *redis.Client
+	BloomFilter *bloom.SBloomFilter
+	SnowFlake   *snowflake.SnowFlake
 }
