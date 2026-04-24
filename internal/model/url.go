@@ -37,5 +37,6 @@ type RedirectURLRequest struct {
 }
 type RedirectURLResponse struct {
 	LongURL  string    `json:"longurl"`
-	ExpireAt time.Time `json:"expireat"`
+	ShortURL string    `json:"shorturl"`
+	ExpireAt time.Time `json:"expiretime"`
 }
