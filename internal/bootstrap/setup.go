@@ -5,6 +5,7 @@ import (
 	"shortURL/database/db"
 	"shortURL/database/rdb"
 	"shortURL/internal/model"
+	"shortURL/pkg/bloom"
 	"shortURL/pkg/logger"
 	"shortURL/pkg/snowflake"
 )
@@ -22,4 +23,5 @@ func Setup() {
 	Application.RDB = rdb.NewRDB()
 	Application.Logger = logger.NewLoger()
 	Application.SnowFlake, _ = snowflake.NewSnowFlake(1)
+	Application.BloomFilter, _ = bloom.NewBloomFilter(1000000, 0.01)
 }
