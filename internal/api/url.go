@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"shortURL/internal/bootstrap"
 	"shortURL/internal/model"
@@ -63,7 +62,6 @@ func (uh *URLHandler) CreateURL(c *gin.Context) {
 		bootstrap.Application.Logger.Error("输入数据格式错误", zap.Error(err))
 		return
 	}
-	fmt.Println(req)
 
 	// 业务逻辑层调用 传入数据格式正确的req
 	rep, err := uh.urlService.CreateURL(c, &req)
@@ -73,9 +71,35 @@ func (uh *URLHandler) CreateURL(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, rep)
 	// 渲染首页界面 将创建的短链返回给客户端
 	if rep != nil {
 		uh.IndexHandler(rep)(c)
 	}
+}
+
+// RedirectURL 根据短码重定向到对应的长链接
+func (uh *URLHandler) RedirectURL(c *gin.Context) {
+	// 获取请求URL中的短码参数
+	shortCode := c.Param("code")
+	var req = &model.RedirectURLRequest{}
+
+	if shortCode != "" { // 浏览器等客户端访问 会有code参数
+		req.ShortURL = shortCode
+	} else { // 工具访问 比如外部调用api访问
+		// 增加从JSON Body中获取code的方式 支持api调用
+		if err := c.ShouldBindJSON(req); err != nil {
+			bootstrap.Application.Logger.Error("JSON Body数据绑定失败", zap.Error(err))
+			return
+		}
+	}
+
+	// 调用service层方法
+	rep, err := uh.urlService.RedirectURL(c, req)
+	if err != nil {
+		bootstrap.Application.Logger.Error("短链重定向失败")
+		return
+	}
+
+	// 重定向长链接
+	c.Redirect(http.StatusMovedPermanently, rep.LongURL)
 }
