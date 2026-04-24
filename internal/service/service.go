@@ -17,11 +17,19 @@ type Repository interface {
 	IsExistLongURL(longURL string) (bool, error)
 	IsExistShortURL(shortURL string) (bool, error)
 	GetShortURL(LongURL string) (*model.CreateURLResponse, error)
+	FindLongURL(shortURL string) (*model.RedirectURLResponse, error)
 }
 
 // Cache 缓存服务接口
 type Cache interface {
 	CreateURL(ctx context.Context, req *model.CreateURLRequest) error
+	GetURL(ctx context.Context, shortURL string) (*model.RedirectURLResponse, error)
+}
+
+// SBloomFilter 布隆过滤器接口
+type SBloomFilter interface {
+	AddBloomFilterElem(data []byte)
+	IsExistElem(data []byte) bool
 }
 
 // ShortCodeGenerator 短链生成器接口
@@ -41,6 +49,7 @@ func NewURLService(repo Repository, cache Cache) *URLService {
 		cache:              cache,
 		shortCodeGenerator: base62.NewShortCodeGenerator(),  // 短链生成器 自定义
 		snowFlakeGenerator: bootstrap.Application.SnowFlake, // 雪花ID生成器 自定义
+		bloomFilter:        bootstrap.Application.BloomFilter,
 	}
 }
 
@@ -49,6 +58,7 @@ type URLService struct { // URL服务接口
 	cache              Cache
 	shortCodeGenerator ShortCodeGenerator
 	snowFlakeGenerator SnowFlakeGenerator
+	bloomFilter        SBloomFilter
 }
 
 // CreateURL 创建短链服务
@@ -95,13 +105,14 @@ func (us *URLService) CreateURL(ctx context.Context, req *model.CreateURLRequest
 		rep.ShortURL = req.SelfShortUrl
 	} else { // 未自定义短链 生成随机短链
 		urlParams.IsCustom = false
-		rep.ShortURL, err = us.getShortURL(0, urlParams.ID)
+		urlParams.ShortURL, err = us.getShortURL(0, urlParams.ID)
+		rep.ShortURL = urlParams.ShortURL
 		if err != nil {
 			bootstrap.Application.Logger.Error("生成短码失败", zap.Error(err))
 			return nil, err
 		}
 		if urlParams.ShortURL == "" {
-			bootstrap.Application.Logger.Error("生成短码失败", zap.Error(err))
+			bootstrap.Application.Logger.Error("获取到的短码为空", zap.Error(err))
 			return nil, err
 		}
 	}
@@ -117,6 +128,10 @@ func (us *URLService) CreateURL(ctx context.Context, req *model.CreateURLRequest
 		}
 	} else { // 不设置过期时间 默认过期时间为1小时
 		urlParams.ExpireAt = time.Now().Add(time.Hour)
+		// 也要给req.ExpireTime传入值 用于缓存操作
+		// *req.ExpireTime = 1 致命错误 这样是使用了空指针
+		defaultTime := 1
+		req.ExpireTime = &defaultTime
 	}
 
 	// 调用repo接口 将数据写入数据库
@@ -127,7 +142,7 @@ func (us *URLService) CreateURL(ctx context.Context, req *model.CreateURLRequest
 		return nil, errRepo
 	}
 
-	// 将随机生成的短链也写入req中 用于缓存操作
+	// 将随机生成的短链与过期时间也写入req中 用于缓存操作
 	req.SelfShortUrl = urlParams.ShortURL
 	// 调用cache接口 将数据写入缓存中
 	errCache := us.cache.CreateURL(ctx, req)
@@ -136,14 +151,54 @@ func (us *URLService) CreateURL(ctx context.Context, req *model.CreateURLRequest
 		return nil, errCache
 	}
 	// 写入布隆过滤器
+	us.bloomFilter.AddBloomFilterElem([]byte(urlParams.ShortURL))
 
 	return rep, nil
 }
 
 // RedirectURL 重定向服务 主要根据短链去查询对应的长链 返回给api调用
 func (us *URLService) RedirectURL(ctx context.Context, req *model.RedirectURLRequest) (*model.RedirectURLResponse, error) {
+	var rep = &model.RedirectURLResponse{}
+	var err error
+	// 布隆过滤器 防止缓存穿透问题 过滤掉绝对不存在的短链
+	existBloom := us.bloomFilter.IsExistElem([]byte(req.ShortURL))
+	if !existBloom {
+		// 布隆过滤器中不存在的直接退出
+		return nil, fmt.Errorf("短链不存在")
+	}
 
-	return nil, nil
+	// 缓存
+	rep, err = us.cache.GetURL(ctx, req.ShortURL)
+	if err != nil {
+		bootstrap.Application.Logger.Error("查询缓存失败")
+		return nil, fmt.Errorf("查询缓存失败: %w", err)
+	}
+	if rep.LongURL != "" {
+		bootstrap.Application.Logger.Info("缓存中存在该短链", zap.String("shortURL", rep.ShortURL))
+		return rep, nil
+	}
+
+	// 如果缓存中不存在 则需要查询数据库
+	rep, err = us.repo.FindLongURL(req.ShortURL)
+	if err != nil {
+		return nil, fmt.Errorf("查询数据库失败: %w", err)
+	}
+	if rep == nil {
+		return nil, fmt.Errorf("数据库中不存在该短链")
+	}
+
+	// 如果数据库存在但缓存不存在 则需要同步到缓存中
+	remainingHours := int(rep.ExpireAt.Sub(time.Now()).Hours())
+	err = us.cache.CreateURL(ctx, &model.CreateURLRequest{
+		LongURL:      rep.LongURL,
+		ExpireTime:   &remainingHours,
+		SelfShortUrl: rep.ShortURL,
+	})
+	if err != nil {
+		return rep, fmt.Errorf("缓存同步失败")
+	}
+
+	return rep, nil
 }
 
 // getShortURL 根据雪花ID随机生成短链服务 最多尝试生成n次 如果都失败 则返回空字符串
