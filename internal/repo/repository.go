@@ -68,3 +68,16 @@ func (r *Repository) GetShortURL(LongURL string) (*model.CreateURLResponse, erro
 		ShortURL: shortURL,
 	}, nil
 }
+
+// FindLongURL 查询数据库 根据短链接返回长链接
+func (r *Repository) FindLongURL(shortURL string) (*model.RedirectURLResponse, error) {
+	var rep = &model.RedirectURLResponse{}
+	err := r.DB.Where("shorturl = ?", shortURL).First(&rep).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return rep, nil
+}
