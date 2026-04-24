@@ -1,6 +1,8 @@
 package base62
 
-import "strings"
+import (
+	"strings"
+)
 
 type ShortCodeGenerator struct {
 }
@@ -28,14 +30,14 @@ func (s *ShortCodeGenerator) GenerateShortCode(snowflakeID int64) string {
 		snowflakeID /= 62                      // 再进行高位字符的计算
 	}
 	// 反转字符串
-	code := ReverseString(result.String())
+	code := s.reverseString(result.String())
 	return code
 }
 
-// ReverseString  反转字符串
-func ReverseString(s string) string {
+// reverseString  反转字符串
+func (s *ShortCodeGenerator) reverseString(r string) string {
 	// go中string是不可变的 所以需要将string转换为rune切片
-	runes := []rune(s)
+	runes := []rune(r)
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
