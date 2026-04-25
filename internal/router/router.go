@@ -29,13 +29,14 @@ func InitRouter() *gin.Engine {
 
 	// 路由注册
 	r.GET("/", urlHandler.IndexHandler(nil))
-	r.GET("/:code", urlHandler.RedirectURL)
 
 	apiV1 := r.Group("/api/v1")
 	{
 		apiV1.GET("/index", urlHandler.IndexHandler(nil))
 		apiV1.POST("/createurl", urlHandler.CreateURL)
 	}
+
+	r.GET("/:code", urlHandler.RedirectURL)
 
 	return r
 }
