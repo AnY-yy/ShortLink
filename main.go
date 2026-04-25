@@ -12,5 +12,5 @@ func main() {
 	bootstrap.Setup()
 
 	// 启动服务
-	router.InitRouter().Run(":8080")
+	router.InitRouter().Run("0.0.0.0:8080")
 }
