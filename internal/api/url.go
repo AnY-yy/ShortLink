@@ -36,9 +36,13 @@ func (uh *URLHandler) IndexHandler(rep *model.CreateURLResponse) func(c *gin.Con
 		if rep != nil {
 			data = gin.H{
 				"shorturl": rep.ShortURL,
+				"error":    "",
 			}
 		} else {
-			data = nil
+			data = gin.H{
+				"shorturl": "",
+				"error":    "",
+			}
 		}
 		c.HTML(http.StatusOK, "index.tmpl", data)
 	}
@@ -51,14 +55,27 @@ func (uh *URLHandler) CreateURL(c *gin.Context) {
 	// 数据获取
 	var req model.CreateURLRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
+		// 将错误返回给前端 保留填写的数据
+		c.HTML(http.StatusBadRequest, "index.tmpl", gin.H{
+			"shorturl":     "",
+			"error":        err.Error(),      // 前端错误提示区显示这里的值
+			"longurl":      req.LongURL,      // 可选：保留用户输入
+			"selfshorturl": req.SelfShortUrl, // 可选：保留自定义短码
+			"expiretime":   req.ExpireTime,   // 可选：保留过期时间
 		})
 		return
 	}
 
 	// 数据校验
 	if err := uh.validator.Struct(req); err != nil {
+		// 将错误返回给前端 保留填写的数据
+		c.HTML(http.StatusBadRequest, "index.tmpl", gin.H{
+			"shorturl":     "",
+			"error":        err.Error(),
+			"longurl":      req.LongURL,
+			"selfshorturl": req.SelfShortUrl,
+			"expiretime":   req.ExpireTime,
+		})
 		bootstrap.Application.Logger.Error("输入数据格式错误", zap.Error(err))
 		return
 	}
@@ -69,11 +86,25 @@ func (uh *URLHandler) CreateURL(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		c.HTML(http.StatusInternalServerError, "index.tmpl", gin.H{
+			"shorturl":     "",
+			"error":        err.Error(),
+			"longurl":      req.LongURL,
+			"selfshorturl": req.SelfShortUrl,
+			"expiretime":   req.ExpireTime,
+		})
 		return
 	}
 	// 渲染首页界面 将创建的短链返回给客户端
 	if rep != nil {
-		uh.IndexHandler(rep)(c)
+		// 将生成的短链与填写的数据一起渲染到前端中
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"shorturl":     rep.ShortURL, // 回填前端短码输入框
+			"error":        "",
+			"longurl":      req.LongURL,
+			"selfshorturl": req.SelfShortUrl,
+			"expiretime":   req.ExpireTime,
+		})
 	}
 }
 
