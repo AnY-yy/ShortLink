@@ -4,99 +4,227 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>短链接生成器</title>
-  <!-- 引入Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- 引入Font Awesome图标 -->
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-  <!-- 自定义Tailwind配置 -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             primary: '#165DFF',
+            primaryDeep: '#0E42D2',
             secondary: '#6B7280',
             success: '#10B981',
-            light: '#F3F4F6'
+            danger: '#EF4444',
+            panel: '#FFFFFF',
+            line: '#E5E7EB'
           },
           fontFamily: {
-            inter: ['Inter', 'system-ui', 'sans-serif'],
+            sans: ['"Segoe UI"', '"PingFang SC"', '"Microsoft YaHei"', 'system-ui', 'sans-serif']
           },
-        },
+          boxShadow: {
+            panel: '0 24px 80px rgba(22, 93, 255, 0.12)'
+          }
+        }
       }
     }
   </script>
-
   <style type="text/tailwindcss">
+    @layer base {
+      body {
+        @apply bg-slate-100 text-slate-800;
+        background-image:
+          radial-gradient(circle at top left, rgba(22, 93, 255, 0.14), transparent 34%),
+          radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.10), transparent 28%),
+          linear-gradient(135deg, #f8fafc 0%, #eef4ff 48%, #f8fafc 100%);
+      }
+    }
+
     @layer utilities {
-      .form-input-focus {
-        @apply focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all;
-      }
       .card-shadow {
-        @apply shadow-lg shadow-primary/5;
+        @apply shadow-panel;
       }
+
+      .input-base {
+        @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400;
+      }
+
+      .input-with-icon {
+        @apply pl-11;
+      }
+
+      .input-focus {
+        @apply focus:border-primary focus:ring-4 focus:ring-primary/10;
+      }
+
+      .input-readonly {
+        @apply bg-slate-50 text-slate-700;
+      }
+
+      .field-icon {
+        @apply pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400;
+      }
+
       .btn-disabled {
-        @apply opacity-70 cursor-not-allowed pointer-events-none;
+        @apply cursor-not-allowed opacity-70 pointer-events-none;
+      }
+
+      .surface-grid {
+        background-image:
+          linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+        background-size: 24px 24px;
       }
     }
   </style>
 </head>
-<body class="bg-gray-50 font-inter min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-xl">
-    <div class="bg-white rounded-2xl card-shadow p-6 md:p-8">
-      <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-          <i class="fa fa-link text-2xl text-primary"></i>
+<body class="min-h-screen font-sans">
+  <main class="mx-auto flex min-h-screen max-w-7xl items-center px-4 py-10 sm:px-6 lg:px-8">
+    <section class="grid w-full gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+      <div class="relative overflow-hidden rounded-[28px] border border-white/70 bg-slate-900 px-6 py-8 text-white sm:px-8 lg:px-10">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_32%),linear-gradient(135deg,rgba(22,93,255,0.92),rgba(15,23,42,0.96))]"></div>
+        <div class="surface-grid absolute inset-0 opacity-20"></div>
+        <div class="relative">
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm backdrop-blur">
+            <i class="fa fa-bolt"></i>
+            <span>Gin + MySQL + Redis 短链服务</span>
+          </div>
+          <h1 class="mt-6 max-w-xl text-3xl font-bold leading-tight sm:text-4xl">
+            与当前项目风格一致的短链接生成页
+          </h1>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">
+            短链生成器
+          </p>
+
+          <div class="mt-8 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
+              <p class="text-xs uppercase tracking-[0.2em] text-slate-300">默认接口</p>
+              <p class="mt-2 text-lg font-semibold">POST /api/v1/createurl</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
+              <p class="text-xs uppercase tracking-[0.2em] text-slate-300">跳转入口</p>
+              <p class="mt-2 text-lg font-semibold">GET /:code</p>
+            </div>
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
+              <p class="text-xs uppercase tracking-[0.2em] text-slate-300">模板变量</p>
+              <p class="mt-2 text-lg font-semibold">shorturl / error</p>
+            </div>
+          </div>
         </div>
-        <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-bold text-gray-800">短链接生成器</h1>
-        <p class="text-secondary mt-2">快速将长链接转换为简洁的短链接</p>
       </div>
 
-      <form id="shortenForm" class="space-y-5">
-        <!-- 长链接输入框 -->
-        <div>
-          <label for="longurl" class="block text-sm font-medium text-gray-700 mb-1">长链接</label>
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fa fa-globe"></i></span>
-            <input type="text" id="longurl" name="longurl" placeholder="请输入需要缩短的原始链接" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none form-input-focus" required>
+      <div class="card-shadow rounded-[28px] border border-white/80 bg-panel p-6 sm:p-8">
+        <div class="mb-8">
+          <div class="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <i class="fa fa-link text-2xl"></i>
           </div>
+          <h2 class="mt-4 text-2xl font-bold text-slate-900">创建短链接</h2>
+          <p class="mt-2 text-sm leading-6 text-secondary">
+            支持长链接压缩、自定义短码和过期时间设置。
+            生成完成后会保留你的填写内容，方便直接看到长链与短码的对应关系。
+          </p>
         </div>
 
-        <!-- 短链接显示框 -->
-        <div>
-          <label for="shorturl" class="block text-sm font-medium text-gray-700 mb-1">生成的短链接</label>
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fa fa-compress"></i></span>
-            <input type="text" id="shorturl" name="shorturl" readonly placeholder="生成后将自动显示在这里" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-gray-50 outline-none form-input-focus cursor-not-allowed">
-          </div>
+        <div
+          id="serverMessage"
+          class="mb-5 hidden rounded-2xl border px-4 py-3 text-sm leading-6"
+          data-shorturl="{{ if . }}{{ with index . "shorturl" }}{{ . }}{{ end }}{{ end }}"
+          data-error="{{ if . }}{{ with index . "error" }}{{ . }}{{ end }}{{ end }}">
         </div>
 
-        <!-- 自定义短链接 -->
-        <div>
-          <label for="selfshorturl" class="block text-sm font-medium text-gray-700 mb-1">自定义短链接 <span class="text-xs text-secondary">(可选)</span></label>
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fa fa-edit"></i></span>
-            <input type="text" id="selfshorturl" name="selfshorturl" placeholder="自定义后缀，如：my-link" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none form-input-focus">
+        <form id="shortenForm" class="space-y-5">
+          <div>
+            <label for="longurl" class="mb-2 block text-sm font-medium text-slate-700">长链接</label>
+            <div class="relative">
+              <span class="field-icon"><i class="fa fa-globe"></i></span>
+              <input
+                type="url"
+                id="longurl"
+                name="longurl"
+                value="{{ if . }}{{ with index . "longurl" }}{{ . }}{{ end }}{{ end }}"
+                placeholder="请输入需要缩短的原始链接"
+                class="input-base input-with-icon input-focus"
+                required>
+            </div>
           </div>
-        </div>
 
-        <!-- 自定义过期时间 -->
-        <div>
-          <label for="expiretime" class="block text-sm font-medium text-gray-700 mb-1">自定义过期时间 <span class="text-xs text-secondary">(可选，单位：小时)</span></label>
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><i class="fa fa-clock-o"></i></span>
-            <input type="text" id="expiretime" name="expiretime" placeholder="输入链接有效时长，默认永久有效" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 outline-none form-input-focus">
+          <div>
+            <label for="shorturl" class="mb-2 block text-sm font-medium text-slate-700">生成的短码</label>
+            <div class="flex gap-3">
+              <div class="relative flex-1">
+                <span class="field-icon"><i class="fa fa-compress"></i></span>
+                <input
+                  type="text"
+                  id="shorturl"
+                  name="shorturl"
+                  value="{{ if . }}{{ with index . "shorturl" }}{{ . }}{{ end }}{{ end }}"
+                  readonly
+                  placeholder="生成后会显示在这里"
+                  class="input-base input-with-icon input-readonly input-focus">
+              </div>
+              <button
+                type="button"
+                id="copyBtn"
+                class="inline-flex items-center justify-center rounded-xl border border-line bg-slate-50 px-4 text-sm font-medium text-slate-700 transition hover:border-primary hover:text-primary">
+                复制
+              </button>
+            </div>
           </div>
-        </div>
 
-        <button type="submit" id="submitBtn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
-          <i class="fa fa-magic"></i><span>生成短链接</span>
-        </button>
-      </form>
-    </div>
-    <p class="text-center text-sm text-secondary mt-6">© 2025 短链接生成器</p>
-  </div>
+          <div class="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label for="selfshorturl" class="mb-2 block text-sm font-medium text-slate-700">
+                自定义短码
+                <span class="text-xs font-normal text-secondary">可选，4 到 10 位字母或数字</span>
+              </label>
+              <div class="relative">
+                <span class="field-icon"><i class="fa fa-edit"></i></span>
+                <input
+                  type="text"
+                  id="selfshorturl"
+                  name="selfshorturl"
+                  value="{{ if . }}{{ with index . "selfshorturl" }}{{ . }}{{ end }}{{ end }}"
+                  placeholder="例如 demo123"
+                  class="input-base input-with-icon input-focus">
+              </div>
+            </div>
+
+            <div>
+              <label for="expiretime" class="mb-2 block text-sm font-medium text-slate-700">
+                过期时间
+                <span class="text-xs font-normal text-secondary">可选，单位小时，0 表示长期有效</span>
+              </label>
+              <div class="relative">
+                <span class="field-icon"><i class="fa fa-clock-o"></i></span>
+                <input
+                  type="number"
+                  id="expiretime"
+                  name="expiretime"
+                  min="0"
+                  max="100"
+                  value="{{ if . }}{{ with index . "expiretime" }}{{ . }}{{ end }}{{ end }}"
+                  placeholder="默认 1 小时"
+                  class="input-base input-with-icon input-focus">
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs leading-6 text-slate-500">
+            页面预留了两个模板渲染入口：
+            `shorturl` 用于回填短码输入框，`error` 用于展示接口或校验失败信息。
+          </div>
+
+          <button
+            type="submit"
+            id="submitBtn"
+            class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-medium text-white transition hover:bg-primaryDeep">
+            <i class="fa fa-magic"></i>
+            <span>生成短链接</span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
 
   <script>
     const form = document.getElementById('shortenForm');
@@ -104,37 +232,138 @@
     const btnText = submitBtn.querySelector('span');
     const btnIcon = submitBtn.querySelector('i');
     const shortUrlInput = document.getElementById('shorturl');
+    const copyBtn = document.getElementById('copyBtn');
+    const serverMessage = document.getElementById('serverMessage');
+    const longUrlInput = document.getElementById('longurl');
+    const selfShortUrlInput = document.getElementById('selfshorturl');
+    const expireTimeInput = document.getElementById('expiretime');
+    const formStateKey = 'shorturl-form-state';
 
-    form.addEventListener('submit', async function(e) {
+    function saveFormState() {
+      sessionStorage.setItem(formStateKey, JSON.stringify({
+        longurl: longUrlInput.value,
+        selfshorturl: selfShortUrlInput.value,
+        expiretime: expireTimeInput.value
+      }));
+    }
+
+    function restoreFormState() {
+      const raw = sessionStorage.getItem(formStateKey);
+      if (!raw) return;
+
+      try {
+        const data = JSON.parse(raw);
+        if (!longUrlInput.value && data.longurl) longUrlInput.value = data.longurl;
+        if (!selfShortUrlInput.value && data.selfshorturl) selfShortUrlInput.value = data.selfshorturl;
+        if (!expireTimeInput.value && data.expiretime !== undefined) expireTimeInput.value = data.expiretime;
+      } catch (error) {
+        sessionStorage.removeItem(formStateKey);
+      }
+    }
+
+    function showMessage(type, message) {
+      if (!message) {
+        serverMessage.className = 'mb-5 hidden rounded-2xl border px-4 py-3 text-sm leading-6';
+        serverMessage.textContent = '';
+        return;
+      }
+
+      const baseClass = 'mb-5 rounded-2xl border px-4 py-3 text-sm leading-6';
+      if (type === 'error') {
+        serverMessage.className = baseClass + ' border-red-200 bg-red-50 text-red-600';
+      } else {
+        serverMessage.className = baseClass + ' border-emerald-200 bg-emerald-50 text-emerald-600';
+      }
+      serverMessage.textContent = message;
+    }
+
+    function renderServerState() {
+      const shorturl = (serverMessage.dataset.shorturl || '').trim();
+      const error = (serverMessage.dataset.error || '').trim();
+
+      if (shorturl) {
+        shortUrlInput.value = shorturl;
+        showMessage('success', '短链接生成成功，结果已回填到短码输入框。');
+        return;
+      }
+
+      if (error) {
+        showMessage('error', error);
+      }
+    }
+
+    restoreFormState();
+    renderServerState();
+
+    longUrlInput.addEventListener('input', saveFormState);
+    selfShortUrlInput.addEventListener('input', saveFormState);
+    expireTimeInput.addEventListener('input', saveFormState);
+
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const longUrl = document.getElementById('longurl').value.trim();
-      const customSuffix = document.getElementById('selfshorturl').value.trim();
-      const expiretime = document.getElementById('expiretime').value.trim();
+      const longUrl = longUrlInput.value.trim();
+      const customSuffix = selfShortUrlInput.value.trim();
+      const expiretime = expireTimeInput.value.trim();
+
+      saveFormState();
 
       submitBtn.classList.add('btn-disabled');
       btnText.textContent = '生成中...';
       btnIcon.className = 'fa fa-spinner fa-spin';
       shortUrlInput.value = '';
+      showMessage('', '');
 
-      const postData = {
-        longurl: longUrl
-      };
+      const postData = { longurl: longUrl };
       if (customSuffix) postData.selfshorturl = customSuffix;
-      if (expiretime) postData.expiretime = parseInt(expiretime);
+      if (expiretime !== '') postData.expiretime = Number(expiretime);
 
-      const response = await fetch('/api/v1/createurl', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(postData)
-      });
+      try {
+        const response = await fetch('/api/v1/createurl', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(postData)
+        });
 
-      const result = await response.json();
-      shortUrlInput.value = result.shorturl || '';
+        const contentType = response.headers.get('content-type') || '';
 
-      submitBtn.classList.remove('btn-disabled');
-      btnText.textContent = '生成短链接';
-      btnIcon.className = 'fa fa-magic';
+        if (contentType.includes('application/json')) {
+          const result = await response.json();
+          if (!response.ok) {
+            showMessage('error', result.error || '请求失败，请稍后再试');
+          } else {
+            shortUrlInput.value = result.shorturl || '';
+            showMessage('success', result.shorturl ? '短链接生成成功。' : '请求成功，但没有返回短码。');
+          }
+        } else {
+          const html = await response.text();
+          document.open();
+          document.write(html);
+          document.close();
+          return;
+        }
+      } catch (error) {
+        showMessage('error', '网络请求失败，请确认服务已经启动');
+      } finally {
+        submitBtn.classList.remove('btn-disabled');
+        btnText.textContent = '生成短链接';
+        btnIcon.className = 'fa fa-magic';
+      }
+    });
+
+    copyBtn.addEventListener('click', async function () {
+      const value = shortUrlInput.value.trim();
+      if (!value) {
+        showMessage('error', '当前没有可复制的短码');
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(value);
+        showMessage('success', '短码已复制到剪贴板');
+      } catch (error) {
+        showMessage('error', '复制失败，请手动复制');
+      }
     });
   </script>
 </body>
