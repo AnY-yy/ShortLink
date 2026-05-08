@@ -1,0 +1,61 @@
+{"level":"PANIC","ts":"2026-05-07T16:50:52.955+0800","caller":"logger/logger.go:45","msg":"数据库连接初始化失败!","error":"数据库链接失败! Error 1045 (28000): Access denied for user '127.0.0.1'@'localhost' (using password: YES)"}
+{"level":"PANIC","ts":"2026-05-07T16:52:45.354+0800","caller":"logger/logger.go:45","msg":"缓存连接初始化失败!","error":"Redis Ping: ping: PONG "}
+{"level":"INFO","ts":"2026-05-07T16:54:53.097+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-07T17:14:54.048+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-07T17:21:30.898+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"PANIC","ts":"2026-05-08T10:27:47.994+0800","caller":"logger/logger.go:45","msg":"缓存连接初始化失败!","error":"Redis Ping: dial tcp 127.0.0.1:6379: connectex: No connection could be made because the target machine actively refused it. "}
+{"level":"INFO","ts":"2026-05-08T10:28:04.525+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:46:48.073+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:50:53.898+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:51:45.206+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:52:45.435+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:53:00.260+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:54:33.444+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:55:25.627+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:55:58.325+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T10:56:54.912+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T11:15:40.274+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.085+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.085+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.086+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.087+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.087+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.087+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.088+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.088+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:15:46.088+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:16:19.159+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:16:19.159+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:16:19.160+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:16:54.898+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:16:54.898+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:16:54.898+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:16:55.881+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:16:55.882+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:16:55.882+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:17:49.827+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.283+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.283+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.284+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.286+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.286+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.286+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.287+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.287+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:17:54.287+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:18:06.953+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.153+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.153+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.155+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.156+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.156+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.156+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.157+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.157+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:18:12.157+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:18:45.878+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-08T11:18:49.222+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-08T11:18:49.222+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-08T11:18:49.223+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-08T11:18:49.223+0800","caller":"logger/logger.go:33","msg":"开始执行创建短链服务,调用ServiceCore接口中的CreateURL方法"}
+{"level":"INFO","ts":"2026-05-08T16:58:26.298+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
