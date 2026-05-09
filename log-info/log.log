@@ -59,3 +59,54 @@
 {"level":"INFO","ts":"2026-05-08T11:18:49.223+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
 {"level":"INFO","ts":"2026-05-08T11:18:49.223+0800","caller":"logger/logger.go:33","msg":"开始执行创建短链服务,调用ServiceCore接口中的CreateURL方法"}
 {"level":"INFO","ts":"2026-05-08T16:58:26.298+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-09T11:21:16.116+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-09T11:21:16.123+0800","caller":"logger/logger.go:33","msg":"https://baidu.com成功生成全局唯一雪花ID","ID":178707868671836160}
+{"level":"INFO","ts":"2026-05-09T11:21:16.123+0800","caller":"logger/logger.go:33","msg":"https://baidu.com未自定义短码,开始生成随机短码"}
+{"level":"INFO","ts":"2026-05-09T11:21:16.123+0800","caller":"logger/logger.go:33","msg":"1次生成短码为dsaex"}
+{"level":"INFO","ts":"2026-05-09T11:21:16.123+0800","caller":"logger/logger.go:33","msg":"生成短码dsaex即将返回","ShortCode":"dsaex"}
+{"level":"INFO","ts":"2026-05-09T11:21:16.123+0800","caller":"logger/logger.go:33","msg":"https://baidu.com的创建时间为为:2026-05-09T11:21:16+08:00,过期时间为:2026-05-09T21:21:16+08:00"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.245+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.252+0800","caller":"logger/logger.go:33","msg":"开始检验请求体中的参数","req":{"longurl":"https://baidu.com","selfshorturl":"","expiretime":10}}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"长链接https://baidu.com未生成短链,开始执行生成短链逻辑操作"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"开始生成全局唯一雪花ID"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"https://baidu.com成功生成全局唯一雪花ID","ID":178708053766471680}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"https://baidu.com未自定义短码,开始生成随机短码"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"1次生成短码为dsaex"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"生成短码dsaex即将返回","ShortCode":"dsaex"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"https://baidu.com预设置过期时间为:10"}
+{"level":"INFO","ts":"2026-05-09T11:22:00.253+0800","caller":"logger/logger.go:33","msg":"https://baidu.com的创建时间为为:2026-05-09T11:22:00+08:00,过期时间为:2026-05-09T21:22:00+08:00"}
+{"level":"INFO","ts":"2026-05-09T11:23:01.559+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-09T11:23:01.565+0800","caller":"logger/logger.go:33","msg":"开始检验请求体中的参数","req":{"longurl":"https://baidu.com","selfshorturl":"selfTest","expiretime":10}}
+{"level":"INFO","ts":"2026-05-09T11:23:01.565+0800","caller":"logger/logger.go:33","msg":"长链接https://baidu.com未生成短链,开始执行生成短链逻辑操作"}
+{"level":"INFO","ts":"2026-05-09T11:23:01.565+0800","caller":"logger/logger.go:33","msg":"开始生成全局唯一雪花ID"}
+{"level":"INFO","ts":"2026-05-09T11:23:01.565+0800","caller":"logger/logger.go:33","msg":"https://baidu.com成功生成全局唯一雪花ID","ID":178708310927638528}
+{"level":"INFO","ts":"2026-05-09T11:23:01.565+0800","caller":"logger/logger.go:33","msg":"https://baidu.com预自定义短码为selfTest开始校验是否已存在"}
+{"level":"INFO","ts":"2026-05-09T11:23:01.566+0800","caller":"logger/logger.go:33","msg":"selfTest自定义短码合法"}
+{"level":"INFO","ts":"2026-05-09T11:23:01.566+0800","caller":"logger/logger.go:33","msg":"https://baidu.com预设置过期时间为:10小时"}
+{"level":"INFO","ts":"2026-05-09T11:23:01.566+0800","caller":"logger/logger.go:33","msg":"https://baidu.com的创建时间为为:2026-05-09T11:23:01+08:00,过期时间为:2026-05-09T21:23:01+08:00"}
+{"level":"PANIC","ts":"2026-05-09T14:01:28.843+0800","caller":"logger/logger.go:45","msg":"缓存连接初始化失败!","error":"Redis Ping: dial tcp 127.0.0.1:6379: connectex: No connection could be made because the target machine actively refused it. "}
+{"level":"INFO","ts":"2026-05-09T14:01:43.150+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-09T14:01:43.158+0800","caller":"logger/logger.go:33","msg":"开始检验请求体中的参数","req":{"longurl":"https://baidu.com","selfshorturl":"selfTest","expiretime":10}}
+{"level":"INFO","ts":"2026-05-09T14:01:43.159+0800","caller":"logger/logger.go:33","msg":"长链接https://baidu.com未生成短链,开始执行生成短链逻辑操作"}
+{"level":"INFO","ts":"2026-05-09T14:01:43.159+0800","caller":"logger/logger.go:33","msg":"开始生成全局唯一雪花ID"}
+{"level":"INFO","ts":"2026-05-09T14:01:43.159+0800","caller":"logger/logger.go:33","msg":"https://baidu.com成功生成全局唯一雪花ID","ID":178748247387439104}
+{"level":"INFO","ts":"2026-05-09T14:01:43.159+0800","caller":"logger/logger.go:33","msg":"https://baidu.com预自定义短码为selfTest开始校验是否已存在"}
+{"level":"INFO","ts":"2026-05-09T14:01:43.159+0800","caller":"logger/logger.go:33","msg":"selfTest自定义短码合法"}
+{"level":"INFO","ts":"2026-05-09T14:01:43.159+0800","caller":"logger/logger.go:33","msg":"https://baidu.com预设置过期时间为:10小时"}
+{"level":"INFO","ts":"2026-05-09T14:01:43.159+0800","caller":"logger/logger.go:33","msg":"https://baidu.com的创建时间为为:2026-05-09T14:01:43+08:00,过期时间为:2026-05-10T00:01:43+08:00"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.248+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.254+0800","caller":"logger/logger.go:33","msg":"开始检验请求体中的参数","req":{"longurl":"https://baidu.com","selfshorturl":"selfTest","expiretime":10}}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"长链接https://baidu.com未生成短链,开始执行生成短链逻辑操作"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"开始生成全局唯一雪花ID"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"https://baidu.com成功生成全局唯一雪花ID","ID":178792208294510592}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"https://baidu.com预自定义短码为selfTest开始校验是否已存在"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"selfTest自定义短码合法"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"https://baidu.com预设置过期时间为:10小时"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"https://baidu.com的创建时间为为:2026-05-09T16:56:24+08:00,过期时间为:2026-05-10T02:56:24+08:00"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.256+0800","caller":"logger/logger.go:33","msg":"https://baidu.com开始写入数据库"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.307+0800","caller":"logger/logger.go:33","msg":"https://baidu.com写入数据库成功"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.307+0800","caller":"logger/logger.go:33","msg":"https://baidu.com开始写入缓存"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.309+0800","caller":"logger/logger.go:33","msg":"https://baidu.com写入缓存成功"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.309+0800","caller":"logger/logger.go:33","msg":"https://baidu.com开始写入布隆过滤器"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.309+0800","caller":"logger/logger.go:33","msg":"https://baidu.com写入布隆过滤器成功"}
+{"level":"INFO","ts":"2026-05-09T16:56:24.309+0800","caller":"logger/logger.go:33","msg":"返回响应参数","响应体":{"shorturl":"selfTest"}}

@@ -8,7 +8,10 @@ import (
 	"shortURL/internal/cache"
 	"shortURL/internal/repo"
 	"shortURL/internal/service"
+	"shortURL/pkg/base62"
+	"shortURL/pkg/bloomFilter"
 	"shortURL/pkg/logger"
+	"shortURL/pkg/snowflake"
 	"time"
 
 	"go.uber.org/zap"
@@ -18,11 +21,14 @@ import (
 // 相对与v1 v2将全部接口类型作为字段存储在App结构体中 而不是接口类型变量了
 // 依赖注入容器
 type App struct {
-	Logger  logger.Logger
-	Config  config.ConfigProvider
-	Repo    repo.Repository
-	Cache   cache.Cache
-	Service *service.Service
+	Logger               logger.Logger
+	Config               config.ConfigProvider
+	Repo                 repo.Repository
+	Cache                cache.Cache
+	SnowFlakeIDGenerator snowflake.SnowflakeGenerator
+	Base62Generator      base62.ShortCodeGenerator
+	BloomFilter          bloomFilter.BloomFilter
+	Service              *service.Service
 }
 
 func SetUp() *App {
@@ -59,17 +65,39 @@ func SetUp() *App {
 		lg.Panic("缓存接口初始化失败!")
 	}
 
+	// 初始化雪花ID生成器接口
+	snowFlakeIDGenerator, err := snowflake.NewSnowFlake(1)
+	if err != nil {
+		lg.Panic("雪花ID生成器初始化失败!", zap.Error(err))
+	}
+
+	// 初始化短码生成器接口
+	base62Generator := base62.NewShortGenerator()
+	if base62Generator == nil {
+		lg.Panic("短码生成器初始化失败!")
+	}
+
+	// 初始化布隆过滤器接口
+	sbf, err := bloomFilter.NewBloomFilter(10000, 0.01)
+	if err != nil {
+		lg.Panic("布隆过滤器初始化失败!", zap.Error(err))
+	}
+
 	// 初始化服务接口
-	sve := service.NewService(lg, dbRepo, rdbCache)
-	if sve == nil {
+	serviceType := service.NewService(lg, dbRepo, rdbCache, snowFlakeIDGenerator, base62Generator, sbf)
+	if serviceType == nil {
 		lg.Panic("服务接口初始化失败!")
 	}
-	lg.Info("应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 服务接口}")
+
+	lg.Info("应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}")
 	return &App{
-		Logger:  lg,
-		Config:  cfgProvider,
-		Repo:    dbRepo,
-		Cache:   rdbCache,
-		Service: sve,
+		Logger:               lg,
+		Config:               cfgProvider,
+		Repo:                 dbRepo,
+		Cache:                rdbCache,
+		SnowFlakeIDGenerator: snowFlakeIDGenerator,
+		Base62Generator:      base62Generator,
+		BloomFilter:          sbf,
+		Service:              serviceType,
 	}
 }
