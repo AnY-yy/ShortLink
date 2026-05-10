@@ -21,9 +21,14 @@ type RedisConfig struct {
 	DB       int    `yaml:"db"`
 }
 
+type IPInfoConfig struct {
+	Token string `yaml:"token"`
+}
+
 type AppConfig struct {
-	DBCfg  DatabaseConfig `yaml:"database"`
-	RDBCfg RedisConfig    `yaml:"redis"`
+	DBCfg     DatabaseConfig `yaml:"database"`
+	RDBCfg    RedisConfig    `yaml:"redis"`
+	IPInfoCfg IPInfoConfig   `yaml:"ipinfo"`
 }
 
 type ConfigLoader struct {

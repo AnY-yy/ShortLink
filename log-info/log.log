@@ -110,3 +110,29 @@
 {"level":"INFO","ts":"2026-05-09T16:56:24.309+0800","caller":"logger/logger.go:33","msg":"https://baidu.com开始写入布隆过滤器"}
 {"level":"INFO","ts":"2026-05-09T16:56:24.309+0800","caller":"logger/logger.go:33","msg":"https://baidu.com写入布隆过滤器成功"}
 {"level":"INFO","ts":"2026-05-09T16:56:24.309+0800","caller":"logger/logger.go:33","msg":"返回响应参数","响应体":{"shorturl":"selfTest"}}
+{"level":"INFO","ts":"2026-05-09T20:59:33.488+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"INFO","ts":"2026-05-09T20:59:33.498+0800","caller":"logger/logger.go:33","msg":"开始检验请求体中的参数","req":{"longurl":"https://baidu.com","selfshorturl":"selfTest","expiretime":10}}
+{"level":"INFO","ts":"2026-05-09T20:59:33.501+0800","caller":"logger/logger.go:33","msg":"存在https://baidu.com对应的短链记录,开始查表查询短链信息"}
+{"level":"INFO","ts":"2026-05-09T20:59:33.501+0800","caller":"logger/logger.go:33","msg":"查询到短链信息,即将返回响应","https://baidu.com":"selfTest"}
+{"level":"INFO","ts":"2026-05-09T21:00:01.529+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"PANIC","ts":"2026-05-10T15:39:26.416+0800","caller":"logger/logger.go:45","msg":"缓存连接初始化失败!","error":"Redis Ping: dial tcp 127.0.0.1:6379: connectex: No connection could be made because the target machine actively refused it. "}
+{"level":"INFO","ts":"2026-05-10T15:59:38.531+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}"}
+{"level":"PANIC","ts":"2026-05-10T16:11:46.920+0800","caller":"logger/logger.go:45","msg":"中间件 - Logger 初始化失败"}
+{"level":"INFO","ts":"2026-05-10T16:13:40.392+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件 服务接口}"}
+{"level":"INFO","ts":"2026-05-10T16:22:31.208+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件 服务接口}"}
+{"level":"INFO","ts":"2026-05-10T16:22:39.583+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"GET","path":"/api/v2/index","status":200,"duration":"1 ms","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"}
+{"level":"INFO","ts":"2026-05-10T16:24:18.561+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"GET","path":"/api/v2/index","status":200,"duration":"0 ms","user_agent":"PostmanRuntime/7.51.1"}
+{"level":"INFO","ts":"2026-05-10T16:26:38.398+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"220.181.38.251","city":"Beijing","region":"Beijing","country":"CN","loc":"39.9075,116.3972","org":"AS23724 IDC, China Telecommunications Corporation"},"method":"GET","path":"/api/v2/index","status":200,"duration":"0 ms","user_agent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.22621.3672"}
+{"level":"INFO","ts":"2026-05-10T16:26:56.908+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"154.9.253.151","city":"Hong Kong","region":"Hong Kong","country":"HK","loc":"22.2783,114.1747","org":"AS979 NetLab Global"},"method":"GET","path":"/api/v2/index","status":200,"duration":"1 ms","user_agent":"Mozilla/5.0 (Windows NT; Windows NT 10.0; zh-CN) WindowsPowerShell/5.1.22621.3672"}
+{"level":"INFO","ts":"2026-05-10T16:49:44.174+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"PANIC","ts":"2026-05-10T16:50:22.836+0800","caller":"logger/logger.go:45","msg":"中间件 - Recovery 初始化失败"}
+{"level":"PANIC","ts":"2026-05-10T16:50:58.845+0800","caller":"logger/logger.go:45","msg":"中间件 - Recovery 初始化失败"}
+{"level":"INFO","ts":"2026-05-10T16:51:06.030+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"PANIC","ts":"2026-05-10T16:51:06.048+0800","caller":"logger/logger.go:45","msg":"应用启动失败!"}
+{"level":"INFO","ts":"2026-05-10T16:51:05.512+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-10T16:51:26.050+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"PANIC","ts":"2026-05-10T16:53:03.734+0800","caller":"logger/logger.go:45","msg":"中间件 - Logger 初始化失败"}
+{"level":"PANIC","ts":"2026-05-10T16:53:07.928+0800","caller":"logger/logger.go:45","msg":"中间件 - Logger 初始化失败"}
+{"level":"INFO","ts":"2026-05-10T16:54:13.442+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-10T16:54:26.571+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-10T16:54:35.964+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"GET","path":"/api/v2/index","status":200,"duration":"1 ms","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"}

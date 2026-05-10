@@ -6,6 +6,9 @@ import (
 	db2 "shortURL/database/db"
 	rdb2 "shortURL/database/rdb"
 	"shortURL/internal/cache"
+	"shortURL/internal/external/ipinfo"
+	"shortURL/internal/middleware/middleware_log"
+	"shortURL/internal/middleware/middleware_recover"
 	"shortURL/internal/repo"
 	"shortURL/internal/service"
 	"shortURL/pkg/base62"
@@ -16,6 +19,17 @@ import (
 
 	"go.uber.org/zap"
 )
+
+// MiddleWare 中间件接口结构体
+type MiddleWare struct {
+	Logger  middleware_log.MiddleWareLogger
+	Recover middleware_recover.MiddleWareRecover
+}
+
+// External 第三方API接口
+type External struct {
+	IpInfo ipinfo.IPInfoLoader
+}
 
 // App 应用核心结构体
 // 相对与v1 v2将全部接口类型作为字段存储在App结构体中 而不是接口类型变量了
@@ -28,6 +42,8 @@ type App struct {
 	SnowFlakeIDGenerator snowflake.SnowflakeGenerator
 	Base62Generator      base62.ShortCodeGenerator
 	BloomFilter          bloomFilter.BloomFilter
+	Externals            External
+	MiddleWares          MiddleWare
 	Service              *service.Service
 }
 
@@ -83,13 +99,31 @@ func SetUp() *App {
 		lg.Panic("布隆过滤器初始化失败!", zap.Error(err))
 	}
 
+	// 初始化调用第三方api的接口
+	apiIPInfo := ipinfo.NewIPInfoLoader(cfgProvider)
+	if err := apiIPInfo.Ping(); err != nil {
+		lg.Panic("第三方api - ipinfo 初始化失败")
+	}
+
+	// 中间件接口
+	// log
+	middleWareLogger := middleware_log.NewMiddleWareLogger(lg, apiIPInfo)
+	if middleWareLogger == nil {
+		lg.Panic("中间件 - Logger 初始化失败")
+	}
+	// recovery
+	middleWareRecovery := middleware_recover.NewMiddleWareRecover(lg)
+	if middleWareRecovery == nil {
+		lg.Panic("中间件 - Recovery 初始化失败")
+	}
+
 	// 初始化服务接口
 	serviceType := service.NewService(lg, dbRepo, rdbCache, snowFlakeIDGenerator, base62Generator, sbf)
 	if serviceType == nil {
 		lg.Panic("服务接口初始化失败!")
 	}
 
-	lg.Info("应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 服务接口}")
+	lg.Info("应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}")
 	return &App{
 		Logger:               lg,
 		Config:               cfgProvider,
@@ -98,6 +132,13 @@ func SetUp() *App {
 		SnowFlakeIDGenerator: snowFlakeIDGenerator,
 		Base62Generator:      base62Generator,
 		BloomFilter:          sbf,
-		Service:              serviceType,
+		MiddleWares: MiddleWare{
+			Logger:  middleWareLogger,
+			Recover: middleWareRecovery,
+		},
+		Externals: External{
+			IpInfo: apiIPInfo,
+		},
+		Service: serviceType,
 	}
 }

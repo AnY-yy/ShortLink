@@ -118,5 +118,7 @@ func (a *APIHandler) CreateURL(c *gin.Context) {
 // RedirectURL
 // GET请求 /:code 重定向短链
 func (a *APIHandler) RedirectURL(c *gin.Context) {
-
+	// 获取URL参数 code
+	code := c.Param("code")
+	fmt.Println(code)
 }
