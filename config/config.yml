@@ -6,7 +6,7 @@ database:
   dbname: your_db_name
 
 redis:
-  addr: your_addr # default: 127.0.0.1:6739
+  addr: your_addr # default: 127.0.0.1:6379
   password: your_password # default: ""
   db: your_db # default: 0
 
