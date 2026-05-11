@@ -1,4 +1,4 @@
-# ShortURL v1
+# ShortURL.v1
 
 一个基于 Go 实现的短链接服务，使用 `Gin + GORM + MySQL + Redis` 构建，包含短链生成、短链跳转、缓存加速、布隆过滤器防穿透、定时清理过期数据等核心能力。
 
