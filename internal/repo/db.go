@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"shortURL/internal/model"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -13,6 +14,9 @@ type Repository interface {
 	GetShortCode(ctx context.Context, longURL string) (*model.CreateURLReponse, error)
 	ShortURLIsExist(ctx context.Context, shortURL string) (bool, error)
 	CreateURL(url *model.URLParams) error
+	CleanExpiredData(ctx context.Context, now time.Time) (int64, error)
+	RedirectURL(ctx context.Context, shortURL string) (*model.RedirectURLResponse, error)
+	GetAllShortURL() ([]string, error)
 }
 
 type DBRepository struct {
@@ -79,4 +83,39 @@ func (d *DBRepository) CreateURL(url *model.URLParams) error {
 		return err
 	}
 	return nil
+}
+
+// CleanExpiredData
+// 清理过期数据
+func (d *DBRepository) CleanExpiredData(ctx context.Context, now time.Time) (int64, error) {
+	result := d.db.WithContext(ctx).Where("expireat IS NOT NULL AND expireat < ?", now).Delete(&model.URLParams{})
+
+	return result.RowsAffected, result.Error
+}
+
+// RedirectURL
+// 在数据库中查询短链对应长链信息
+func (d *DBRepository) RedirectURL(ctx context.Context, shortURL string) (*model.RedirectURLResponse, error) {
+	rep := &model.RedirectURLResponse{}
+	err := d.db.WithContext(ctx).Where("shorturl = ?", shortURL).First(&rep).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return rep, nil
+}
+
+// GetAllShortURL
+// 得到数据库中的全部短码数据
+func (d *DBRepository) GetAllShortURL() ([]string, error) {
+	var shortURLs []string
+
+	err := d.db.Model(&model.BloomFilterInjection{}).Pluck("shorturl", &shortURLs).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return shortURLs, nil
 }

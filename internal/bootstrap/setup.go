@@ -11,6 +11,8 @@ import (
 	"shortURL/internal/middleware/middleware_recover"
 	"shortURL/internal/repo"
 	"shortURL/internal/service"
+	task2 "shortURL/internal/task"
+	"shortURL/internal/task/repotask"
 	"shortURL/pkg/base62"
 	"shortURL/pkg/bloomFilter"
 	"shortURL/pkg/logger"
@@ -44,7 +46,7 @@ type App struct {
 	BloomFilter          bloomFilter.BloomFilter
 	Externals            External
 	MiddleWares          MiddleWare
-	Service              *service.Service
+	Service              service.Service
 }
 
 func SetUp() *App {
@@ -94,9 +96,13 @@ func SetUp() *App {
 	}
 
 	// 初始化布隆过滤器接口
-	sbf, err := bloomFilter.NewBloomFilter(10000, 0.01)
+	sbf, err := bloomFilter.NewBloomFilter(10000, 0.01, dbRepo)
 	if err != nil {
 		lg.Panic("布隆过滤器初始化失败!", zap.Error(err))
+	}
+	err = sbf.InitBloomFilter()
+	if err != nil {
+		lg.Panic("数据库数据迁移至布隆过滤器失败!", zap.Error(err))
 	}
 
 	// 初始化调用第三方api的接口
@@ -122,8 +128,22 @@ func SetUp() *App {
 	if serviceType == nil {
 		lg.Panic("服务接口初始化失败!")
 	}
+	lg.Info("应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}")
 
-	lg.Info("应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 雪花ID生成器接口 中间件{Log Recovery} 服务接口}")
+	// 初始化定时任务
+	taskRepo := repotask.NewTaskRepo(lg, "短链接过期数据清理", dbRepo, time.Duration(5*time.Minute))
+	if taskRepo == nil {
+		lg.Panic("定时任务 - 短链接过期数据清理 初始化失败")
+	}
+
+	// 启动定时任务
+	task := task2.NewTask(taskRepo)
+	if task == nil {
+		lg.Panic("定时任务启动失败")
+	}
+	task.RunTask()
+	lg.Info("定时任务{短链接过期数据清理}启动成功")
+
 	return &App{
 		Logger:               lg,
 		Config:               cfgProvider,

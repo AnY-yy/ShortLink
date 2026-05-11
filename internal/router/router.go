@@ -32,7 +32,7 @@ func InitRouter(app *bootstrap.App) *gin.Engine {
 		apiGroup.POST("/createurl", apiHandler.CreateURL)
 	}
 
-	apiGroup.GET("/:code", apiHandler.RedirectURL)
+	r.GET("/:code", apiHandler.RedirectURL)
 
 	return r
 }

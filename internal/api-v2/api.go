@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"shortURL/internal/model"
+	"unicode"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -22,6 +23,7 @@ type Logger interface {
 // 项目服务核心接口 包含短链创建与重定向服务
 type ServiceCore interface {
 	CreateURL(ctx context.Context, req *model.CreateURLRequest) (*model.CreateURLReponse, error)
+	RedirectURL(ctx context.Context, req *model.RedirectURLRequest) (*model.RedirectURLResponse, error)
 }
 
 type Handler interface {
@@ -118,7 +120,49 @@ func (a *APIHandler) CreateURL(c *gin.Context) {
 // RedirectURL
 // GET请求 /:code 重定向短链
 func (a *APIHandler) RedirectURL(c *gin.Context) {
-	// 获取URL参数 code
 	code := c.Param("code")
-	fmt.Println(code)
+	var err error
+	var req = &model.RedirectURLRequest{}
+
+	// 获取前端数据
+	if code != "" {
+		if !a.isValidShortCode(code) {
+			c.Status(http.StatusNotFound)
+			return
+		}
+		req.ShortURL = code
+	} else {
+		if err := c.ShouldBindJSON(req); err != nil {
+			a.logger.Error("JSON Body数据绑定失败", zap.Error(err))
+			return
+		}
+	}
+
+	rep, err := a.serviceCore.RedirectURL(c, req)
+	if err != nil && rep == nil {
+		a.logger.Error(req.ShortURL+"重定向失败", zap.Error(err))
+		return
+	}
+	if rep == nil {
+		a.logger.Error("不存在该短链信息", zap.String("ShortCode不存在", req.ShortURL))
+		return
+	}
+
+	c.Redirect(http.StatusMovedPermanently, rep.LongURL)
+}
+
+// isAvaildShortCode
+// 判断路径中/:code是合法的 由a-z A-Z 0-9组成
+func (a *APIHandler) isValidShortCode(code string) bool {
+	if code == "" {
+		return false
+	}
+
+	for _, r := range code {
+		if !unicode.IsLetter(r) && !unicode.IsDigit(r) {
+			return false
+		}
+	}
+
+	return true
 }

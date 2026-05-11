@@ -12,6 +12,11 @@ import (
 type BloomFilter interface {
 	AddBloomFilterElem(data []byte)
 	IsExistData(data []byte) bool
+	InitBloomFilter() error
+}
+
+type Repo interface {
+	GetAllShortURL() ([]string, error)
 }
 
 type SBloomFilter struct {
@@ -19,13 +24,15 @@ type SBloomFilter struct {
 	bitArrayNum uint         // 位数组长度
 	hashNum     uint         // 哈希数量
 	mu          sync.RWMutex // 读写锁
+
+	repo Repo // 数据层接口
 }
 
 // NewBloomFilter 创建布隆过滤器接口器
 // @param n 预期的元素数量
 // @param p 预期的错误率
 // @return BloomFilter
-func NewBloomFilter(n uint, p float64) (BloomFilter, error) {
+func NewBloomFilter(n uint, p float64, repo Repo) (BloomFilter, error) {
 	if n <= 0 || p <= 0 || p > 1 {
 		return nil, errors.New("调用布隆过滤器接口器传入参数错误")
 	}
@@ -38,6 +45,7 @@ func NewBloomFilter(n uint, p float64) (BloomFilter, error) {
 		bitArray:    big.NewInt(0),
 		bitArrayNum: bitArrayNum,
 		hashNum:     hashNum,
+		repo:        repo,
 	}, nil
 }
 
@@ -113,4 +121,18 @@ func (sbf *SBloomFilter) IsExistData(data []byte) bool {
 		}
 	}
 	return true
+}
+
+// InitBloomFilter
+// 每次项目重新启动 都将数据库中的数据写入到布隆过滤器中
+func (sbf *SBloomFilter) InitBloomFilter() error {
+	shortURLs, err := sbf.repo.GetAllShortURL()
+	if err != nil {
+		return err
+	}
+	for _, url := range shortURLs {
+		// fmt.Println("短码:", url)
+		sbf.AddBloomFilterElem([]byte(url))
+	}
+	return nil
 }

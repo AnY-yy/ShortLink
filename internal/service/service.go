@@ -29,6 +29,7 @@ type ShortCodeGenerator interface {
 // Cache 缓存接口
 type Cache interface {
 	CreateURL(ctx context.Context, req *model.CreateURLRequest) error
+	RedirectURL(ctx context.Context, shortURL string) (*model.RedirectURLResponse, error)
 }
 
 // Repository 数据仓库接口
@@ -37,16 +38,24 @@ type Repository interface {
 	GetShortCode(ctx context.Context, longURL string) (*model.CreateURLReponse, error)
 	ShortURLIsExist(ctx context.Context, shortURL string) (bool, error)
 	CreateURL(url *model.URLParams) error
+	RedirectURL(ctx context.Context, shortURL string) (*model.RedirectURLResponse, error)
 }
 
 // Logger 日志接口
 type Logger interface {
 	Info(msg string, fields ...zap.Field)
 	Error(msg string, fields ...zap.Field)
+	Warn(msg string, fields ...zap.Field)
 }
 
-// Service 服务核心结构体
-type Service struct {
+type Service interface {
+	CreateURL(ctx context.Context, req *model.CreateURLRequest) (*model.CreateURLReponse, error)
+	getShortCode(n int, snowFlakeID int64) (string, error)
+	RedirectURL(ctx context.Context, req *model.RedirectURLRequest) (*model.RedirectURLResponse, error)
+}
+
+// ServiceModel 服务核心结构体
+type ServiceModel struct {
 	logger               Logger
 	repo                 Repository
 	cache                Cache
@@ -57,8 +66,8 @@ type Service struct {
 
 // NewService 返回服务核心结构体实例
 // 外部接口依赖 导出Service类型
-func NewService(logger Logger, repo Repository, cache Cache, generator SnowFlakeIDGenerator, base62Generator ShortCodeGenerator, bloomFilter SBloomFilter) *Service {
-	return &Service{
+func NewService(logger Logger, repo Repository, cache Cache, generator SnowFlakeIDGenerator, base62Generator ShortCodeGenerator, bloomFilter SBloomFilter) Service {
+	return &ServiceModel{
 		logger:               logger,
 		repo:                 repo,
 		cache:                cache,
@@ -69,7 +78,7 @@ func NewService(logger Logger, repo Repository, cache Cache, generator SnowFlake
 }
 
 // CreateURL 创建短链服务
-func (s *Service) CreateURL(ctx context.Context, req *model.CreateURLRequest) (*model.CreateURLReponse, error) {
+func (s *ServiceModel) CreateURL(ctx context.Context, req *model.CreateURLRequest) (*model.CreateURLReponse, error) {
 	var exist bool
 	var err error
 	var rep = &model.CreateURLReponse{}
@@ -97,7 +106,6 @@ func (s *Service) CreateURL(ctx context.Context, req *model.CreateURLRequest) (*
 
 	s.logger.Info("长链接" + req.LongURL + "未生成短链,开始执行生成短链逻辑操作")
 	// 生成唯一短链的逻辑: 生成全局唯一雪花ID -> 是否自定义短码 -> 是否设置过期时间 -> 存入数据库、缓存、布隆过滤器 -> 返回响应
-	s.logger.Info("开始生成全局唯一雪花ID")
 	urlParam.ID = s.snowFlakeIDGenerator.GenerateSnowFlakeID()
 	s.logger.Info(req.LongURL+"成功生成全局唯一雪花ID", zap.Int64("ID", urlParam.ID))
 
@@ -142,14 +150,14 @@ func (s *Service) CreateURL(ctx context.Context, req *model.CreateURLRequest) (*
 	urlParam.CreatedAt = time.Now()
 	s.logger.Info(fmt.Sprintf("%s的创建时间为为:%v,过期时间为:%v", req.LongURL, urlParam.CreatedAt.Format(time.RFC3339), urlParam.ExpireAt.Format(time.RFC3339)))
 
-	s.logger.Info(req.LongURL + "开始写入数据库")
+	// 写入数据库
 	if errRepo := s.repo.CreateURL(urlParam); errRepo != nil {
 		s.logger.Error(req.LongURL+"写入数据库失败", zap.Error(errRepo))
 		return nil, fmt.Errorf("写入数据库失败:%v", errRepo)
 	}
 	s.logger.Info(req.LongURL + "写入数据库成功")
 
-	s.logger.Info(req.LongURL + "开始写入缓存")
+	// 写入缓存
 	req.SelfShortCode = rep.ShortCode // 将生成的短码赋值给请求参数 缓存操作需要使用
 	errCache := s.cache.CreateURL(ctx, req)
 	if errCache != nil {
@@ -158,8 +166,8 @@ func (s *Service) CreateURL(ctx context.Context, req *model.CreateURLRequest) (*
 	}
 	s.logger.Info(req.LongURL + "写入缓存成功")
 
-	s.logger.Info(req.LongURL + "开始写入布隆过滤器")
-	s.bloomFilter.AddBloomFilterElem([]byte(req.LongURL))
+	// 写入布隆过滤器
+	s.bloomFilter.AddBloomFilterElem([]byte(rep.ShortCode))
 	s.logger.Info(req.LongURL + "写入布隆过滤器成功")
 
 	// 返回响应参数
@@ -169,7 +177,7 @@ func (s *Service) CreateURL(ctx context.Context, req *model.CreateURLRequest) (*
 
 // getShortCode
 // 生成短码中间商 校验短码是否唯一 直到生成5次退出
-func (s *Service) getShortCode(n int, snowFlakeID int64) (string, error) {
+func (s *ServiceModel) getShortCode(n int, snowFlakeID int64) (string, error) {
 	if n > 5 {
 		return "", errors.New("生成短码失败,已生成5次")
 	}
@@ -178,11 +186,64 @@ func (s *Service) getShortCode(n int, snowFlakeID int64) (string, error) {
 	exist, err := s.repo.ShortURLIsExist(context.Background(), shortCode)
 	if err != nil {
 		s.logger.Error("在数据库中检查"+shortCode+"的短链是否存在出现错误!", zap.Error(err))
-		return "", fmt.Errorf("service/service.go/getShortCode 生成短码时数据交互错误:%v", err)
+		return "", fmt.Errorf("service/createurl.go/getShortCode 生成短码时数据交互错误:%v", err)
 	}
 	if exist {
 		return s.getShortCode(n+1, snowFlakeID)
 	}
 	s.logger.Info("生成短码"+shortCode+"即将返回", zap.String("ShortCode", shortCode))
 	return shortCode, nil
+}
+
+// RedirectURL
+// 查找短码对应的长链
+func (s *ServiceModel) RedirectURL(ctx context.Context, req *model.RedirectURLRequest) (*model.RedirectURLResponse, error) {
+	var rep = &model.RedirectURLResponse{}
+	var err error
+	var exist bool
+	s.logger.Info("开始寻找" + req.ShortURL + "对应的长链")
+
+	// 布隆过滤器
+	exist = s.bloomFilter.IsExistData([]byte(req.ShortURL))
+	if !exist {
+		s.logger.Info(req.ShortURL + "不在布隆过滤器中,其对应的长链一定不存在")
+		return nil, errors.New(req.ShortURL + "不存在")
+	}
+
+	// 缓存
+	rep, err = s.cache.RedirectURL(ctx, req.ShortURL)
+	if err != nil {
+		s.logger.Error(req.ShortURL+"查询缓存时错误", zap.Error(err))
+		return nil, errors.New("查询缓存时错误")
+	}
+	if rep.LongURL != "" {
+		s.logger.Info("在缓存中查询到对应长链", zap.String(rep.ShortURL, rep.LongURL))
+		return rep, nil
+	}
+
+	// 数据库
+	rep, err = s.repo.RedirectURL(ctx, req.ShortURL)
+	if err != nil {
+		s.logger.Error(req.ShortURL+"查询数据库时错误", zap.Error(err))
+		return nil, errors.New("数据层出现错误")
+	}
+	if rep == nil {
+		s.logger.Error(req.ShortURL + "没有对应的长链信息")
+		return nil, errors.New(req.ShortURL + "不存在对应的长链信息,无效的请求")
+	}
+
+	// 如果数据库存在而缓存中不存在 则需要将数据同步到缓存中
+	expireTime := int(rep.ExpireAt.Sub(time.Now()).Hours())
+	err = s.cache.CreateURL(ctx, &model.CreateURLRequest{
+		LongURL:       rep.LongURL,
+		SelfShortCode: rep.ShortURL,
+		ExpireTime:    &expireTime,
+	})
+	if err != nil {
+		s.logger.Warn("数据库与缓存数据同步失败", zap.Any("LinkData", rep))
+		return rep, errors.New("数据库与缓存数据同步失败")
+	}
+	s.logger.Info("数据库与缓存数据同步成功", zap.Any("LinkData", rep))
+
+	return rep, nil
 }
