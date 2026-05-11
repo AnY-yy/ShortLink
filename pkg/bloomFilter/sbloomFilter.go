@@ -73,7 +73,7 @@ func getOptimalHashNum(m, n uint) uint {
 
 // GetHashValues 获取当前元素的hashNum个哈希值
 func (sbf *SBloomFilter) getHashValues(data []byte) []uint {
-	positions := make([]uint, sbf.hashNum)
+	positions := make([]uint, 0, sbf.hashNum)
 
 	// 使用双哈希寒素计算哈希值
 	hash1, hash2 := murmur3.Sum128(data)

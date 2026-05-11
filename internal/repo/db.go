@@ -62,7 +62,7 @@ func (d *DBRepository) GetShortCode(ctx context.Context, longURL string) (*model
 // 查询短链是否存在
 func (d *DBRepository) ShortURLIsExist(ctx context.Context, shortURL string) (bool, error) {
 	var url = model.URLParams{}
-	err := d.db.WithContext(ctx).Where("longurl = ?", shortURL).First(&url).Error
+	err := d.db.WithContext(ctx).Where("shorturl = ?", shortURL).First(&url).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) { // 表中不存在的err
 			return false, nil
@@ -112,7 +112,7 @@ func (d *DBRepository) RedirectURL(ctx context.Context, shortURL string) (*model
 func (d *DBRepository) GetAllShortURL() ([]string, error) {
 	var shortURLs []string
 
-	err := d.db.Model(&model.BloomFilterInjection{}).Pluck("shorturl", &shortURLs).Error
+	err := d.db.Model(&model.URLParams{}).Pluck("shorturl", &shortURLs).Error
 	if err != nil {
 		return nil, err
 	}

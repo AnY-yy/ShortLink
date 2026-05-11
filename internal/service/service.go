@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 )
 
@@ -212,6 +213,10 @@ func (s *ServiceModel) RedirectURL(ctx context.Context, req *model.RedirectURLRe
 
 	// 缓存
 	rep, err = s.cache.RedirectURL(ctx, req.ShortURL)
+	if err != nil && errors.Is(err, redis.Nil) {
+		err = nil
+		rep = &model.RedirectURLResponse{}
+	}
 	if err != nil {
 		s.logger.Error(req.ShortURL+"查询缓存时错误", zap.Error(err))
 		return nil, errors.New("查询缓存时错误")

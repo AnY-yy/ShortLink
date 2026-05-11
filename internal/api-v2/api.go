@@ -148,7 +148,10 @@ func (a *APIHandler) RedirectURL(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusMovedPermanently, rep.LongURL)
+	// 防止重定向结果被浏览器/中间代理缓存，便于调试链路日志
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Redirect(http.StatusFound, rep.LongURL)
 }
 
 // isAvaildShortCode

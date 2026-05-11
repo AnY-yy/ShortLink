@@ -626,3 +626,67 @@
 {"level":"INFO","ts":"2026-05-11T20:03:08.122+0800","caller":"logger/logger.go:33","msg":"1不在布隆过滤器中,其对应的长链一定不存在"}
 {"level":"ERROR","ts":"2026-05-11T20:03:08.122+0800","caller":"logger/logger.go:41","msg":"1重定向失败","error":"1不存在"}
 {"level":"INFO","ts":"2026-05-11T20:03:08.657+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"GET","path":"/1","status":200,"duration":"0 ms","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"}
+{"level":"INFO","ts":"2026-05-11T20:06:57.771+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:06:57.773+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:10:08.562+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:10:08.570+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:10:08.570+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:10:08.570+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:11:01.412+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:11:01.423+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:11:01.424+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:11:01.425+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:16:01.424+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:16:01.425+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:16:56.902+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:16:56.919+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:16:56.919+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:16:56.920+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:19:59.177+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:19:59.190+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:19:59.190+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:19:59.191+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:20:36.971+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:20:36.988+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:20:36.988+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:20:36.990+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:21:00.294+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:21:00.304+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:21:00.304+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:21:00.305+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:26:00.304+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:26:00.306+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:30:31.503+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:30:31.515+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:30:31.515+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:30:31.517+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.849+0800","caller":"logger/logger.go:33","msg":"/api/v2/createurl接收到POST请求, 函数/internal/api-v2/api.go/CreateURL开始执行"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.849+0800","caller":"logger/logger.go:33","msg":"开始绑定前端数据"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.850+0800","caller":"logger/logger.go:33","msg":"开始数据格式校验"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.850+0800","caller":"logger/logger.go:33","msg":"开始执行创建短链服务,调用ServiceCore接口中的CreateURL方法"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.850+0800","caller":"logger/logger.go:33","msg":"开始检验请求体中的参数","req":{"longurl":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html","selfshorturl":"ccpc","expiretime":1}}
+{"level":"INFO","ts":"2026-05-11T20:32:03.851+0800","caller":"logger/logger.go:33","msg":"长链接http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html未生成短链,开始执行生成短链逻辑操作"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.851+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html成功生成全局唯一雪花ID","ID":179571256620777472}
+{"level":"INFO","ts":"2026-05-11T20:32:03.851+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html预自定义短码为ccpc开始校验是否已存在"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.851+0800","caller":"logger/logger.go:33","msg":"ccpc自定义短码合法"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.851+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html预设置过期时间为:1小时"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.851+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html的创建时间为为:2026-05-11T20:32:03+08:00,过期时间为:2026-05-11T21:32:03+08:00"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.862+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html写入数据库成功"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.865+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html写入缓存成功"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.866+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html写入布隆过滤器成功"}
+{"level":"INFO","ts":"2026-05-11T20:32:03.866+0800","caller":"logger/logger.go:33","msg":"返回响应参数","响应体":{"shorturl":"ccpc"}}
+{"level":"INFO","ts":"2026-05-11T20:32:03.866+0800","caller":"logger/logger.go:33","msg":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html的短链创建成功","http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html":"ccpc"}
+{"level":"INFO","ts":"2026-05-11T20:32:04.663+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"POST","path":"/api/v2/createurl","status":200,"duration":"18 ms","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"}
+{"level":"INFO","ts":"2026-05-11T20:32:21.354+0800","caller":"logger/logger.go:33","msg":"开始寻找ccpc对应的长链"}
+{"level":"INFO","ts":"2026-05-11T20:32:21.357+0800","caller":"logger/logger.go:33","msg":"在缓存中查询到对应长链","ccpc":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html"}
+{"level":"INFO","ts":"2026-05-11T20:32:21.725+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"GET","path":"/ccpc","status":301,"duration":"3 ms","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"}
+{"level":"INFO","ts":"2026-05-11T20:32:37.330+0800","caller":"logger/logger.go:33","msg":"开始寻找ccpc对应的长链"}
+{"level":"INFO","ts":"2026-05-11T20:32:37.332+0800","caller":"logger/logger.go:33","msg":"在缓存中查询到对应长链","ccpc":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html"}
+{"level":"INFO","ts":"2026-05-11T20:32:37.709+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"GET","path":"/ccpc","status":301,"duration":"2 ms","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"}
+{"level":"INFO","ts":"2026-05-11T20:33:03.697+0800","caller":"logger/logger.go:33","msg":"应用初始化完成! {配置信息 日志接口 数据仓库接口 缓存接口 布隆过滤器接口 布隆过滤器数据迁移成功 雪花ID生成器接口 中间件{Log Recovery} 服务接口}"}
+{"level":"INFO","ts":"2026-05-11T20:33:03.710+0800","caller":"logger/logger.go:33","msg":"定时任务{短链接过期数据清理}启动成功"}
+{"level":"INFO","ts":"2026-05-11T20:33:03.710+0800","caller":"logger/logger.go:33","msg":"开始执行定时任务:","name":"短链接过期数据清理","interval":300}
+{"level":"INFO","ts":"2026-05-11T20:33:03.712+0800","caller":"logger/logger.go:33","msg":"暂无过期数据"}
+{"level":"INFO","ts":"2026-05-11T20:33:26.975+0800","caller":"logger/logger.go:33","msg":"开始寻找ccpc对应的长链"}
+{"level":"INFO","ts":"2026-05-11T20:33:26.978+0800","caller":"logger/logger.go:33","msg":"在缓存中查询到对应长链","ccpc":"http://m.jyb.cn/rmtzcg/xwy/wzxw/202604/t20260427_2111472501_wap.html"}
+{"level":"INFO","ts":"2026-05-11T20:33:27.361+0800","caller":"logger/logger.go:33","msg":"web请求记录","client":{"ip":"::1","city":"","region":"","country":"","loc":"","org":""},"method":"GET","path":"/ccpc","status":302,"duration":"2 ms","user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0"}
