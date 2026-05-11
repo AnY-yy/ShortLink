@@ -1,14 +1,14 @@
 database:
-  host: 127.0.0.1
-  port: 3306
-  username: root
-  password: aaa2021s
-  dbname: shorturl
+  host: your_host # default: 127.0.0.1
+  port: your_port # default: 3306
+  username: your_user_name
+  password: your_password
+  dbname: your_db_name
 
 redis:
-  addr: 127.0.0.1:6379
-  password:
-  db: 0
+  addr: your_addr # default: 127.0.0.1:6739
+  password: your_password # default: ""
+  db: your_db # default: 0
 
 ipinfo:
-  token: 951837aa7e0df5
+  token: your_ipinfo.io_token
